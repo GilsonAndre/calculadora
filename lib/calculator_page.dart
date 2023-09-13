@@ -8,10 +8,11 @@ class CalculatorPage extends StatefulWidget {
 }
 
 class _CalculatorPageState extends State<CalculatorPage> {
-  int total = 0;
-  int firstNumber = 0;
-  int secondNumber = 0;
-  String operator = "";
+  double firstNumber = 0;
+  double secondNumber = 0;
+  String operator = '';
+  double total = 0;
+  double resultFinal = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 color: Colors.black,
               ),
               child: Text(
-                '$firstNumber $operator $secondNumber',
+                resultFinal.toStringAsFixed(2),
                 textAlign: TextAlign.right,
                 style: const TextStyle(
                   color: Colors.white,
@@ -42,7 +43,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('7'),
                 buttons('8'),
                 buttons('9'),
-                operationButtons('/', Colors.orangeAccent)
+                operationButtons('/', Colors.orangeAccent,
+                    function: calc(firstNumber, secondNumber))
               ],
             ),
             Row(
@@ -50,7 +52,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('4'),
                 buttons('5'),
                 buttons('6'),
-                operationButtons('*', Colors.orangeAccent)
+                operationButtons('*', Colors.orangeAccent,
+                    function: calc(firstNumber, secondNumber))
               ],
             ),
             Row(
@@ -58,22 +61,20 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('1'),
                 buttons('2'),
                 buttons('3'),
-                operationButtons('-', Colors.orangeAccent)
+                operationButtons('-', Colors.orangeAccent,
+                    function: calc(firstNumber, secondNumber))
               ],
             ),
             Row(
               children: [
-                buttons(
-                  '0',
-                ),
-                operationButtons('.', Colors.white),
-                operationButtons('C', Colors.white),
-                operationButtons('+', Colors.orangeAccent)
+                buttons('0'),
+                operationButtons('+', Colors.orangeAccent,
+                    function: calc(firstNumber, secondNumber))
               ],
             ),
             Row(
               children: [
-                operationButtons('=', Colors.orangeAccent),
+                operationButtons('=', Colors.orangeAccent, function: result()),
               ],
             ),
           ],
@@ -95,19 +96,17 @@ class _CalculatorPageState extends State<CalculatorPage> {
             side: const BorderSide(color: Colors.black, width: 0.5),
           ),
           onPressed: () {
-            setState(() {
-              if (operator == '') {
-                setState(() {
-                  firstNumber = int.parse(text);
-                  print(firstNumber);
-                });
-              } else {
-                setState(() {
-                  secondNumber = int.parse(text);
-                  print(firstNumber);
-                });
-              }
-            });
+            if (operator == '') {
+              setState(() {
+                firstNumber = double.parse(text);
+                resultFinal = firstNumber;
+              });
+            } else {
+              setState(() {
+                secondNumber = double.parse(text);
+                resultFinal = secondNumber;
+              });
+            }
           },
           child: Text(
             text,
@@ -135,7 +134,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
           onPressed: () {
             setState(() {
               operator = operatorButton;
-              print(operator);
             });
           },
           child: Text(
@@ -148,5 +146,34 @@ class _CalculatorPageState extends State<CalculatorPage> {
         ),
       ),
     );
+  }
+
+  calc(double number1, double number2) {
+    if (operator == '=') {
+      result();
+    }
+    if (operator == '+') {
+      setState(() {
+        total = (number1 + number2);
+      });
+    } else if (operator == '-') {
+      setState(() {
+        total = (number1 - number2);
+      });
+    } else if (operator == '*') {
+      setState(() {
+        total = (number1 * number2);
+      });
+    } else if (operator == '/') {
+      setState(() {
+        total = (number1 / number2);
+      });
+    }
+  }
+
+  result() {
+    setState(() {
+      resultFinal = total;
+    });
   }
 }
