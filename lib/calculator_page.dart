@@ -8,6 +8,11 @@ class CalculatorPage extends StatefulWidget {
 }
 
 class _CalculatorPageState extends State<CalculatorPage> {
+  int total = 0;
+  int firstNumber = 0;
+  int secondNumber = 0;
+  String operator = "";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,27 +23,57 @@ class _CalculatorPageState extends State<CalculatorPage> {
         body: Column(
           children: [
             Container(
-
+              height: 150,
+              width: MediaQuery.sizeOf(context).width,
+              decoration: const BoxDecoration(
+                color: Colors.black,
+              ),
+              child: Text(
+                '$firstNumber $operator $secondNumber',
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 60,
+                ),
+              ),
             ),
             Row(
               children: [
-                botoes('7'),
-                botoes('8'),
-                botoes('9'),
+                buttons('7'),
+                buttons('8'),
+                buttons('9'),
+                operationButtons('/', Colors.orangeAccent)
               ],
             ),
             Row(
               children: [
-                botoes('4'),
-                botoes('5'),
-                botoes('6'),
+                buttons('4'),
+                buttons('5'),
+                buttons('6'),
+                operationButtons('*', Colors.orangeAccent)
               ],
             ),
             Row(
               children: [
-                botoes('1'),
-                botoes('2'),
-                botoes('3'),
+                buttons('1'),
+                buttons('2'),
+                buttons('3'),
+                operationButtons('-', Colors.orangeAccent)
+              ],
+            ),
+            Row(
+              children: [
+                buttons(
+                  '0',
+                ),
+                operationButtons('.', Colors.white),
+                operationButtons('C', Colors.white),
+                operationButtons('+', Colors.orangeAccent)
+              ],
+            ),
+            Row(
+              children: [
+                operationButtons('=', Colors.orangeAccent),
               ],
             ),
           ],
@@ -48,89 +83,70 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   //Função que cria todos os botões
-  botoes(
-    String number,
-  ) {
+  buttons(String text, {Function? function}) {
     return Flexible(
       flex: 3,
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.sizeOf(context).width,
         height: 100,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(25),
-            top: Radius.circular(25),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            side: const BorderSide(color: Colors.black, width: 0.5),
+          ),
+          onPressed: () {
+            setState(() {
+              if (operator == '') {
+                setState(() {
+                  firstNumber = int.parse(text);
+                  print(firstNumber);
+                });
+              } else {
+                setState(() {
+                  secondNumber = int.parse(text);
+                  print(firstNumber);
+                });
+              }
+            });
+          },
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  operationButtons(String operatorButton, Color cor, {Function? function}) {
+    return Flexible(
+      flex: 3,
+      child: SizedBox(
+        width: MediaQuery.sizeOf(context).width,
+        height: 100,
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: cor,
+            side: const BorderSide(color: Colors.black, width: 0.5),
+          ),
           onPressed: () {
-            print(number);
+            setState(() {
+              operator = operatorButton;
+              print(operator);
+            });
           },
-          child: Text(number),
+          child: Text(
+            operatorButton,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+            ),
+          ),
         ),
       ),
     );
   }
 }
-
-// botoes(String number, String number1, String number2) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       children: [
-//         Flexible(
-//           flex: 3,
-//           child: Container(
-//             width: MediaQuery.sizeOf(context).width,
-//             decoration: const BoxDecoration(
-//               borderRadius: BorderRadius.vertical(
-//                 bottom: Radius.circular(25),
-//                 top: Radius.circular(25),
-//               ),
-//             ),
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 print(number);
-//               },
-//               child: Text(number),
-//             ),
-//           ),
-//         ),
-//         Flexible(
-//           flex: 3,
-//           child: Container(
-//             width: MediaQuery.sizeOf(context).width,
-//             decoration: const BoxDecoration(
-//               borderRadius: BorderRadius.vertical(
-//                 bottom: Radius.circular(25),
-//                 top: Radius.circular(25),
-//               ),
-//             ),
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 print(number1);
-//               },
-//               child: Text(number1),
-//             ),
-//           ),
-//         ),
-//         Flexible(
-//           flex: 3,
-//           child: Container(
-//             width: MediaQuery.sizeOf(context).width,
-//             decoration: const BoxDecoration(
-//               borderRadius: BorderRadius.vertical(
-//                 bottom: Radius.circular(25),
-//                 top: Radius.circular(25),
-//               ),
-//             ),
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 print(number2);
-//               },
-//               child: Text(number2),
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
