@@ -10,12 +10,14 @@ class CalculatorPage extends StatefulWidget {
 class _CalculatorPageState extends State<CalculatorPage> {
   double firstNumber = 0;
   double secondNumber = 0;
-
   String operator = '';
-  double total = 0;
 
-  String results = ''; // responsavel pelo valor que vai para o firstnumber
-  String results2 = ''; // responsavel pelo valor que vai para o secondnumber
+  //total do valor e quem mostra para o usuario
+  double total = 0;
+  // responsavel por mostrar valor que vai para o firstnumber
+  String results = '';
+  // responsavel por mostrar valor que vai para o secondnumber
+  String results2 = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +28,20 @@ class _CalculatorPageState extends State<CalculatorPage> {
         ),
         body: Column(
           children: [
-            Container(
-              height: 150,
-              width: MediaQuery.sizeOf(context).width,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-              ),
-              child: Text(
-                total.toStringAsFixed(2),
-                textAlign: TextAlign.right,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 60,
+            Expanded(
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                padding: const EdgeInsets.symmetric(vertical: 80),
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                ),
+                child: Text(
+                  total.toString(),
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 60,
+                  ),
                 ),
               ),
             ),
@@ -71,7 +75,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
             Row(
               children: [
                 buttons('0'),
-                operationButtons('c', Colors.white),
+                buttons('.'),
+                operationButtons('C', Colors.white),
                 operationButtons('+', Colors.orangeAccent,
                     function: calc(firstNumber, secondNumber))
               ],
@@ -87,7 +92,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
     );
   }
 
-  //Função que cria todos os botões
+  //Função que cria todos os Numeros
   buttons(String text, {Function? function}) {
     return Flexible(
       flex: 3,
@@ -126,6 +131,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
     );
   }
 
+  //Função que cria as operações
   operationButtons(String operatorButton, Color cor, {Function? function}) {
     return Flexible(
       flex: 3,
@@ -158,31 +164,41 @@ class _CalculatorPageState extends State<CalculatorPage> {
   calc(double number1, double number2) {
     if (operator == '=') {
       result();
-    } else if (operator == 'c') {
-      firstNumber = 0;
-      secondNumber = 0;
-      operator = '';
-      total = 0;
-
-      results = '';
-      results2 = '';
-    } else if (operator == '+') {
+      clear();
+    } else if (operator == 'C') {
+      clear();
+    }
+    if (operator == '+') {
       setState(() {
         total = (number1 + number2);
       });
-    } else if (operator == '-') {
+    }
+    if (operator == '-') {
       setState(() {
         total = (number1 - number2);
       });
-    } else if (operator == '*') {
+    }
+    if (operator == '*') {
       setState(() {
         total = (number1 * number2);
       });
-    } else if (operator == '/') {
+    }
+    if (operator == '/') {
       setState(() {
         total = (number1 / number2);
       });
     }
+  }
+
+  clear() {
+    setState(() {
+      firstNumber = 0;
+      secondNumber = 0;
+      operator = '';
+      total = 0;
+      results = '0';
+      results2 = '0';
+    });
   }
 
   result() {
