@@ -51,7 +51,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('8'),
                 buttons('9'),
                 operationButtons('/', Colors.orangeAccent,
-                    function: calc(firstNumber, secondNumber))
+                    function: calcula(firstNumber, secondNumber))
               ],
             ),
             Row(
@@ -60,7 +60,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('5'),
                 buttons('6'),
                 operationButtons('*', Colors.orangeAccent,
-                    function: calc(firstNumber, secondNumber))
+                    function: calcula(firstNumber, secondNumber))
               ],
             ),
             Row(
@@ -69,21 +69,24 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('2'),
                 buttons('3'),
                 operationButtons('-', Colors.orangeAccent,
-                    function: calc(firstNumber, secondNumber))
+                    function: calcula(firstNumber, secondNumber))
               ],
             ),
             Row(
               children: [
                 buttons('0'),
                 buttons('.'),
-                operationButtons('C', Colors.white),
+                buttons(
+                  'C',
+                  
+                ),
                 operationButtons('+', Colors.orangeAccent,
-                    function: calc(firstNumber, secondNumber))
+                    function: calcula(firstNumber, secondNumber))
               ],
             ),
             Row(
               children: [
-                operationButtons('=', Colors.orangeAccent, function: result()),
+                operationButtons('=', Colors.orangeAccent),
               ],
             ),
           ],
@@ -105,6 +108,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
             side: const BorderSide(color: Colors.black, width: 0.5),
           ),
           onPressed: () {
+            function;
             if (operator == '') {
               setState(() {
                 results += text;
@@ -145,7 +149,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ),
           onPressed: () {
             setState(() {
-              operator = operatorButton;
+              function;
+              if (operatorButton != '') {
+                operator = operatorButton;
+              }
             });
           },
           child: Text(
@@ -161,35 +168,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   //Faz os calculos e apaga
-  calc(double number1, double number2) {
-    if (operator == '=') {
-      result();
-      clear();
-    } else if (operator == 'C') {
-      clear();
-    }
-    if (operator == '+') {
-      setState(() {
-        total = (number1 + number2);
-      });
-    }
-    if (operator == '-') {
-      setState(() {
-        total = (number1 - number2);
-      });
-    }
-    if (operator == '*') {
-      setState(() {
-        total = (number1 * number2);
-      });
-    }
-    if (operator == '/') {
-      setState(() {
-        total = (number1 / number2);
-      });
-    }
-  }
-
   clear() {
     setState(() {
       firstNumber = 0;
@@ -206,4 +184,46 @@ class _CalculatorPageState extends State<CalculatorPage> {
       total = total;
     });
   }
+
+  calcula(double number1, double number2) {
+    switch (operator) {
+      case '+':
+        return sum(number1, number2);
+      case '-':
+        return minus(number1, number2);
+      case '*':
+        return multiply(number1, number2);
+      case '/':
+        return divide(number1, number2);
+      case '=':
+        result();
+    }
+  }
+
+  sum(double number1, double number2) {
+    setState(() {
+      total = (number1 + number2);
+    });
+  }
+
+  minus(double number1, double number2) {
+    setState(() {
+      total = (number1 - number2);
+    });
+  }
+
+  multiply(double number1, double number2) {
+    setState(() {
+      total = (number1 * number2);
+    });
+  }
+
+  divide(double number1, double number2) {
+    setState(() {
+      total = (number1 / number2);
+    });
+  }
 }
+//Fazer o c funcionar 
+//o C TA RECEBENDO O = E DEPOIS O C POR ISSO PRECISA DE DOIS CLICKS
+
