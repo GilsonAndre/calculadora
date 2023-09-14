@@ -22,9 +22,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Calculadora'),
+          backgroundColor: Colors.black,
+          elevation: 0.0,
         ),
         body: Column(
           children: [
@@ -50,8 +53,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('7'),
                 buttons('8'),
                 buttons('9'),
-                operationButtons('/', Colors.orangeAccent,
-                    function: calcula(firstNumber, secondNumber))
+                operationButtons('/', Colors.orangeAccent, function: calcula())
               ],
             ),
             Row(
@@ -59,8 +61,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('4'),
                 buttons('5'),
                 buttons('6'),
-                operationButtons('*', Colors.orangeAccent,
-                    function: calcula(firstNumber, secondNumber))
+                operationButtons('*', Colors.orangeAccent, function: calcula())
               ],
             ),
             Row(
@@ -68,20 +69,18 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('1'),
                 buttons('2'),
                 buttons('3'),
-                operationButtons('-', Colors.orangeAccent,
-                    function: calcula(firstNumber, secondNumber))
+                operationButtons('-', Colors.orangeAccent, function: calcula())
               ],
             ),
             Row(
               children: [
                 buttons('0'),
                 buttons('.'),
-                buttons(
+                operationButtons(
                   'C',
-                  
+                  Colors.white,
                 ),
-                operationButtons('+', Colors.orangeAccent,
-                    function: calcula(firstNumber, secondNumber))
+                operationButtons('+', Colors.orangeAccent, function: calcula())
               ],
             ),
             Row(
@@ -148,12 +147,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
             side: const BorderSide(color: Colors.black, width: 0.5),
           ),
           onPressed: () {
-            setState(() {
-              function;
-              if (operatorButton != '') {
-                operator = operatorButton;
-              }
-            });
+            operator = operatorButton;
+            comandos(operatorButton);
           },
           child: Text(
             operatorButton,
@@ -167,7 +162,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
     );
   }
 
-  //Faz os calculos e apaga
   clear() {
     setState(() {
       firstNumber = 0;
@@ -179,24 +173,39 @@ class _CalculatorPageState extends State<CalculatorPage> {
     });
   }
 
+  comandos(String operator) {
+    if (operator == 'C') {
+      clear();
+    } else if (operator == '=') {
+      result();
+    } else if (operator == "+" ||
+        operator == "-" ||
+        operator == "*" ||
+        operator == "/") {
+      calcula();
+    }
+  }
+
   result() {
     setState(() {
-      total = total;
+      total;
     });
   }
 
-  calcula(double number1, double number2) {
+  calcula() {
     switch (operator) {
       case '+':
-        return sum(number1, number2);
+        return sum(firstNumber, secondNumber);
       case '-':
-        return minus(number1, number2);
+        return minus(firstNumber, secondNumber);
       case '*':
-        return multiply(number1, number2);
+        return multiply(firstNumber, secondNumber);
       case '/':
-        return divide(number1, number2);
+        return divide(firstNumber, secondNumber);
       case '=':
         result();
+      case 'C':
+        clear();
     }
   }
 
@@ -224,6 +233,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
     });
   }
 }
-//Fazer o c funcionar 
+//fazer o firstNumber receber o total para proxima conta
 //o C TA RECEBENDO O = E DEPOIS O C POR ISSO PRECISA DE DOIS CLICKS
 
