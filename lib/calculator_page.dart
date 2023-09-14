@@ -10,9 +10,12 @@ class CalculatorPage extends StatefulWidget {
 class _CalculatorPageState extends State<CalculatorPage> {
   double firstNumber = 0;
   double secondNumber = 0;
+
   String operator = '';
   double total = 0;
-  double resultFinal = 0;
+
+  String results = ''; // responsavel pelo valor que vai para o firstnumber
+  String results2 = ''; // responsavel pelo valor que vai para o secondnumber
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 color: Colors.black,
               ),
               child: Text(
-                resultFinal.toStringAsFixed(2),
+                total.toStringAsFixed(2),
                 textAlign: TextAlign.right,
                 style: const TextStyle(
                   color: Colors.white,
@@ -99,13 +102,15 @@ class _CalculatorPageState extends State<CalculatorPage> {
           onPressed: () {
             if (operator == '') {
               setState(() {
-                firstNumber = double.parse(text);
-                resultFinal = firstNumber;
+                results += text;
+                total = double.parse(results);
+                firstNumber = double.parse(results);
               });
             } else {
               setState(() {
-                secondNumber = double.parse(text);
-                resultFinal = secondNumber;
+                results2 += text;
+                total = double.parse(results2);
+                secondNumber = double.parse(results2);
               });
             }
           },
@@ -149,6 +154,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
     );
   }
 
+  //Faz os calculos e apaga
   calc(double number1, double number2) {
     if (operator == '=') {
       result();
@@ -157,7 +163,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
       secondNumber = 0;
       operator = '';
       total = 0;
-      resultFinal = 0;
+
+      results = '';
+      results2 = '';
     } else if (operator == '+') {
       setState(() {
         total = (number1 + number2);
@@ -179,7 +187,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
   result() {
     setState(() {
-      resultFinal = total;
+      total = total;
     });
   }
 }
