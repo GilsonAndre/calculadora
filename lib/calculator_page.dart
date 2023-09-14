@@ -68,6 +68,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
             Row(
               children: [
                 buttons('0'),
+                operationButtons('c', Colors.white),
                 operationButtons('+', Colors.orangeAccent,
                     function: calc(firstNumber, secondNumber))
               ],
@@ -151,8 +152,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
   calc(double number1, double number2) {
     if (operator == '=') {
       result();
-    }
-    if (operator == '+') {
+    } else if (operator == 'c') {
+      firstNumber = 0;
+      secondNumber = 0;
+      operator = '';
+      total = 0;
+      resultFinal = 0;
+    } else if (operator == '+') {
       setState(() {
         total = (number1 + number2);
       });
