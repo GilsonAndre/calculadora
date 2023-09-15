@@ -53,7 +53,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('7'),
                 buttons('8'),
                 buttons('9'),
-                operationButtons('/', Colors.orangeAccent, function: calcula())
+                operationButtons(
+                  '/',
+                  Colors.orangeAccent,
+                )
               ],
             ),
             Row(
@@ -61,7 +64,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('4'),
                 buttons('5'),
                 buttons('6'),
-                operationButtons('*', Colors.orangeAccent, function: calcula())
+                operationButtons(
+                  '*',
+                  Colors.orangeAccent,
+                )
               ],
             ),
             Row(
@@ -69,7 +75,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 buttons('1'),
                 buttons('2'),
                 buttons('3'),
-                operationButtons('-', Colors.orangeAccent, function: calcula())
+                operationButtons(
+                  '-',
+                  Colors.orangeAccent,
+                )
               ],
             ),
             Row(
@@ -108,6 +117,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ),
           onPressed: () {
             function;
+            if (operator != '' && firstNumber == 0) {
+              clear();
+            } else {}
             if (operator == '') {
               setState(() {
                 results += text;
@@ -189,7 +201,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
   result() {
     setState(() {
       total;
+      results = '';
+      results2 = '';
+      operator = '';
+      firstNumber = 0;
+      secondNumber = 0;
     });
+    //clear();
   }
 
   calcula() {
@@ -234,5 +252,3 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 }
 //fazer o firstNumber receber o total para proxima conta
-//o C TA RECEBENDO O = E DEPOIS O C POR ISSO PRECISA DE DOIS CLICKS
-
