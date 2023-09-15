@@ -34,12 +34,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
             Expanded(
               child: Container(
                 width: MediaQuery.sizeOf(context).width,
-                padding: const EdgeInsets.symmetric(vertical: 80),
+                padding: const EdgeInsets.all(8.0),
                 decoration: const BoxDecoration(
                   color: Colors.black,
                 ),
                 child: Text(
-                  total.toString(),
+                  '${firstNumber.toInt()} $operator ${secondNumber.toInt()} \n ${total.toString()}',
                   textAlign: TextAlign.right,
                   style: const TextStyle(
                     color: Colors.white,
@@ -89,12 +89,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   'C',
                   Colors.white,
                 ),
-                operationButtons('+', Colors.orangeAccent, function: calcula())
+                operationButtons('+', Colors.orangeAccent)
               ],
             ),
             Row(
               children: [
-                operationButtons('=', Colors.orangeAccent),
+                operationButtons('=', Colors.orangeAccent, function: calcula()),
               ],
             ),
           ],
